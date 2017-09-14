@@ -30,13 +30,14 @@ class Bank {
 		return null;
 	}
 	
+
 	//CONSTRUCTORS
 	
-	Bank(String name){
-		if (name == null || name.equals("")) {
-			throw new IllegalArgumentException();
-		}
+	Bank(){
 		
+	}
+	
+	Bank(String name) {
 		this.name = name;
 	}
 	
