@@ -2,7 +2,6 @@ package com.zhurylomihaylo.www.entzp;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.UUID;
 
 class Bank {
@@ -11,6 +10,8 @@ class Bank {
 	private BigDecimal monthlyFee = BigDecimal.ZERO;
 	private BigDecimal transactionComission = BigDecimal.ZERO;
 	private BigDecimal transactionFee = BigDecimal.ZERO;
+	
+	static final int ID_COLUMN = 0;
 	
 	//STATIC METHODS
 	

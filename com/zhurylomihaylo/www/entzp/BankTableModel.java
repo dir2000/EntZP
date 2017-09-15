@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 class BankTableModel extends AbstractTableModel {
-	static ArrayList<Bank> bankList = new ArrayList<>();
-	static{
+	private ArrayList<Bank> bankList = new ArrayList<>();
+	private int [] hiddenColumns = new int [] {0}; 
+	
+	BankTableModel(){
 		Bank bank = new Bank("Аваль");
 		bank.setMonthlyFee(BigDecimal.valueOf(50));
 		bank.setTransactionComission(BigDecimal.valueOf(0.0085));
@@ -30,7 +32,7 @@ class BankTableModel extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
-		return BankTableModel.bankList.size();
+		return bankList.size();
 	}
 
 	@Override
@@ -39,4 +41,11 @@ class BankTableModel extends AbstractTableModel {
 		return bank.getFieldValue(arg1);
 	}
 	
+	ArrayList<Bank> getBankList(){
+		return bankList;
+	}
+	
+	int [] getHiddenColumns(){
+		return hiddenColumns;
+	}
 }

@@ -9,9 +9,9 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 
 class MainFrame extends JFrame{
 	static final int DEFAULT_WIDTH = 500;
@@ -35,15 +35,24 @@ class MainFrame extends JFrame{
 		
 		JPanel banksButtonsPane = new JPanel();
 		banksButtonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		addBankButton = new JButton("Додати");
 		banksButtonsPane.add(addBankButton);
+		
 		deleteBankButton = new JButton("Вилучити");
 		banksButtonsPane.add(deleteBankButton);
+		
 		banksPane.add(banksButtonsPane);
 		
 		tableModel = new BankTableModel();
 		bankTable = new JTable(tableModel);
+		for(int i = 0; i < tableModel.getHiddenColumns().length; i++) {
+			bankTable.getColumnModel().getColumn(i).setMinWidth(0);	
+			bankTable.getColumnModel().getColumn(i).setMaxWidth(0);
+		}
+		
 		banksPane.add(bankTable);
+		
 		add(banksPane, BorderLayout.NORTH);
 	}
 	
@@ -51,9 +60,20 @@ class MainFrame extends JFrame{
 		addBankButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BankTableModel.bankList.add(new Bank());
+				tableModel.getBankList().add(new Bank());
 				tableModel.fireTableDataChanged();
 			}
 		});
+		
+		deleteBankButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = bankTable.getSelectedRow();
+				if (selectedRow < 0)
+					return;
+				JOptionPane.showMessageDialog(MainFrame.this, bankTable.getValueAt(selectedRow, Bank.ID_COLUMN));
+			}
+		});
+		
 	}
 }
