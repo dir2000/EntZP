@@ -1,26 +1,16 @@
 package com.zhurylomihaylo.www.entzp;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 class BankTableModel extends AbstractTableModel {
-	private ArrayList<Bank> bankList = new ArrayList<>();
+	ArrayList<Bank> bankList;
 	private int [] hiddenColumns = new int [] {0}; 
 	
-	BankTableModel(){
-		Bank bank = new Bank("Аваль");
-		bank.setMonthlyFee(BigDecimal.valueOf(50));
-		bank.setTransactionComission(BigDecimal.valueOf(0.0085));
-		bank.setTransactionFee(BigDecimal.valueOf(5));
-		bankList.add(bank);
-		
-		Bank bank2 = new Bank("Приватбанк");
-		bank2.setMonthlyFee(BigDecimal.valueOf(30));
-		bank2.setTransactionComission(BigDecimal.valueOf(0.0085));
-		bank2.setTransactionFee(BigDecimal.valueOf(5));
-		bankList.add(bank2);		
+	BankTableModel(ArrayList<Bank> bankList){
+		this.bankList = bankList;
 	}
 
 	@Override
@@ -41,9 +31,16 @@ class BankTableModel extends AbstractTableModel {
 		return bank.getFieldValue(arg1);
 	}
 	
-	ArrayList<Bank> getBankList(){
-		return bankList;
+	@Override	
+	public void setValueAt(Object value, int r, int c) {
+		Bank bank = Entzp.getDataStorage().getBankList().get(r);
+		bank.setFieldValue(c, value);
+		//JOptionPane.showMessageDialog(null, bank);
 	}
+	
+	public boolean isCellEditable(int r, int с){
+		return true;
+	}	
 	
 	int [] getHiddenColumns(){
 		return hiddenColumns;
