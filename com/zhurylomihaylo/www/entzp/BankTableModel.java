@@ -33,7 +33,7 @@ class BankTableModel extends AbstractTableModel {
 	
 	@Override	
 	public void setValueAt(Object value, int r, int c) {
-		Bank bank = Entzp.getDataStorage().getBankList().get(r);
+		Bank bank = DataStorage.getBankList().get(r);
 		bank.setFieldValue(c, value);
 		//JOptionPane.showMessageDialog(null, bank);
 	}

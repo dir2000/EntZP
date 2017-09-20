@@ -1,12 +1,13 @@
 package com.zhurylomihaylo.www.entzp;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.swing.JOptionPane;
 
-class Bank {
+class Bank implements Serializable {
 	static private Object[][] columnFieldsInfo;
 	static final int ID_COLUMN = 0;
 	

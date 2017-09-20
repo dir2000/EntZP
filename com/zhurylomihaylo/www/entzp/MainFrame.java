@@ -5,6 +5,10 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -37,7 +41,10 @@ class MainFrame extends JFrame{
 	
 	void buildGUI(){
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		
+		buildGUIBanks();
+	}
+	
+	void buildGUIBanks(){
 		JPanel banksPane = new JPanel();
 		banksPane.setBorder(BorderFactory.createTitledBorder("Тарифи банків"));
 		banksPane.setLayout(new BoxLayout(banksPane, BoxLayout.Y_AXIS));
@@ -53,7 +60,7 @@ class MainFrame extends JFrame{
 		
 		banksPane.add(banksButtonsPane);
 		
-		tableModel = new BankTableModel(Entzp.getDataStorage().getBankList());
+		tableModel = new BankTableModel(DataStorage.getBankList());
 		bankTable = new JTable(tableModel);
 		TableColumnModel columnModel = bankTable.getColumnModel();
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
@@ -70,14 +77,14 @@ class MainFrame extends JFrame{
 		
 		banksPane.add(new JScrollPane(bankTable));
 		
-		add(banksPane, BorderLayout.NORTH);
+		add(banksPane, BorderLayout.NORTH);		
 	}
 	
 	void defineListeners(){
 		addBankButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Entzp.getDataStorage().getBankList().add(new Bank("Новий банк"));
+				DataStorage.getBankList().add(new Bank("Новий банк"));
 				tableModel.fireTableDataChanged();
 			}
 		});
@@ -89,7 +96,7 @@ class MainFrame extends JFrame{
 				if (selectedRow < 0)
 					return;
 				
-				Bank bank = Entzp.getDataStorage().getBankList().get(selectedRow);
+				Bank bank = DataStorage.getBankList().get(selectedRow);
 				int reply = JOptionPane.showOptionDialog(
 						MainFrame.this,
 						"Ви дійсно бажаєте вилучити \"" + bank.getName() + "\"?",
@@ -99,11 +106,12 @@ class MainFrame extends JFrame{
 						null,
 						new String [] {"Так", "Ні"}, "Так");
 		        if (reply == JOptionPane.YES_OPTION) {
-		        	Entzp.getDataStorage().getBankList().remove(bank);
+		        	DataStorage.getBankList().remove(bank);
 		        	tableModel.fireTableDataChanged();
 		        }
 			}
 		});
 		
 	}
+	
 }

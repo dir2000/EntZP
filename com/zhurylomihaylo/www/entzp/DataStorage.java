@@ -1,12 +1,33 @@
 package com.zhurylomihaylo.www.entzp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-class DataStorage {
+import javax.swing.JOptionPane;
+
+class DataStorage implements Serializable  {
+	static private DataStorage thisInstance;
+	static private final String FILE_NAME;
+	
 	private ArrayList<Bank> bankList;
 
-	DataStorage() {
+	static {
+		FILE_NAME = "data.ser";
+		File file = new File(FILE_NAME);
+		if  (file.exists())
+			readDataStorage(file);
+		else
+			thisInstance = new DataStorage();
+	}
+	
+	private DataStorage() {
 		bankList = new ArrayList<>();
 
 		Bank bank = new Bank("Аваль");
@@ -22,8 +43,28 @@ class DataStorage {
 		bankList.add(bank2);
 	}
 	
-	ArrayList<Bank> getBankList(){
-		return bankList;
+	static ArrayList<Bank> getBankList(){
+		return thisInstance.bankList;
 	}	
+	
+	static void saveDataStorage() throws IOException{
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))){
+			oos.writeObject(thisInstance);
+			oos.flush();
+		}
+//		catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+	}
+
+	private static void readDataStorage(File file) {
+		try (ObjectInputStream oin = new ObjectInputStream(new FileInputStream(file)))
+		{
+			thisInstance = (DataStorage) oin.readObject();			
+		} catch (Exception ex){
+			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": \"" + ex + "\"");
+			thisInstance = new DataStorage();
+		}
+	}
 
 }
