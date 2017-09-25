@@ -18,12 +18,15 @@ class Bank implements Serializable {
 	private BigDecimal transactionFee = BigDecimal.ZERO;
 
 	static {
-		columnFieldsInfo = new Object[5][2];
-		columnFieldsInfo[0] = new Object[]{"id", "ID"};
-		columnFieldsInfo[1] = new Object[]{"name", "Найменування"};
-		columnFieldsInfo[2] = new Object[]{"monthlyFee", "Щомісячна плата"};
-		columnFieldsInfo[3] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %"};
-		columnFieldsInfo[4] = new Object[]{"transactionFee", "Плата за зняття готівки, грн."};
+		//1. Field
+		//2. Column header
+		//3. Is numeric
+		columnFieldsInfo = new Object[5][];
+		columnFieldsInfo[0] = new Object[]{"id", "ID", false};
+		columnFieldsInfo[1] = new Object[]{"name", "Найменування", false};
+		columnFieldsInfo[2] = new Object[]{"monthlyFee", "Щомісячна плата", true};
+		columnFieldsInfo[3] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %", true};
+		columnFieldsInfo[4] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true};
 	}
 	
 	//STATIC METHODS
@@ -62,6 +65,11 @@ class Bank implements Serializable {
 	static String getFieldHeader(int index){
 		return (String) columnFieldsInfo[index][1]; 
 	}
+	
+	static boolean isFieldNumeric(int index){
+		return (boolean) columnFieldsInfo[index][2]; 
+	}
+	
 	
 	//OVERRIDED METHODS
 	@Override

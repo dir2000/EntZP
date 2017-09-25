@@ -79,7 +79,8 @@ class DataStorage implements Serializable  {
 		{
 			thisInstance = (DataStorage) oin.readObject();			
 		} catch (java.io.InvalidClassException ex){
-			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": застірылий формат файлу.");
+			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": застарілий формат файлу.");
+			thisInstance = new DataStorage();
 		} 
 		catch (Exception ex){
 			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": \"" + ex + "\"");
