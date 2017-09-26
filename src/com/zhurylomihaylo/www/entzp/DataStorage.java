@@ -19,10 +19,12 @@ class DataStorage implements Serializable  {
 	static private final String FILE_NAME;
 	
 	private ArrayList<Bank> bankList;
+	private ArrayList<Ent> entList;
 	private BigDecimal minSalary = BigDecimal.ZERO;	
-	private BigDecimal esvRate = BigDecimal.ZERO;
-	private BigDecimal additionalRate = BigDecimal.ZERO;
-	private BigDecimal taxRate = BigDecimal.ZERO;
+	private BigDecimal esvPercent = BigDecimal.ZERO;
+	private BigDecimal taxPercent = BigDecimal.ZERO;	
+	private BigDecimal additionalPercent = BigDecimal.ZERO;
+
 
 	static {
 		FILE_NAME = "data.ser";
@@ -37,6 +39,13 @@ class DataStorage implements Serializable  {
 	//CONSTRUCTORS
 	
 	private DataStorage() {
+		esvPercent = BigDecimal.valueOf(22.0);
+		minSalary = BigDecimal.valueOf(3200.0);
+		additionalPercent = BigDecimal.valueOf(5.0);
+		taxPercent = BigDecimal.valueOf(5.0);
+
+		//
+		
 		bankList = new ArrayList<>();
 
 		Bank bank = new Bank("Аваль");
@@ -51,19 +60,16 @@ class DataStorage implements Serializable  {
 		bank2.setTransactionFee(BigDecimal.valueOf(5D));
 		bankList.add(bank2);
 		
-		esvRate = BigDecimal.valueOf(22.0);
-		minSalary = BigDecimal.valueOf(3200.0);
-		additionalRate = BigDecimal.valueOf(5.0);
-		taxRate = BigDecimal.valueOf(5.0);
+		//
+		
+		entList = new ArrayList<>();
+		Ent ent = new Ent("Іванов Петро Сидорович");
+		entList.add(ent);
 	}
 	
 	
 	//APPLIED METHODS
-	
-	static ArrayList<Bank> getBankList(){
-		return thisInstance.bankList;
-	}	
-	
+		
 	static void saveDataStorage() throws IOException{
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))){
 			oos.writeObject(thisInstance);
@@ -92,12 +98,20 @@ class DataStorage implements Serializable  {
 	
 	//GETTERS AND SETTERS
 	
-	static BigDecimal getEsvRate() {
-		return thisInstance.esvRate;
+	static ArrayList<Bank> getBankList(){
+		return thisInstance.bankList;
+	}	
+
+	static ArrayList<Ent> getEntList(){
+		return thisInstance.entList;
+	}	
+	
+	static BigDecimal getEsvPercent() {
+		return thisInstance.esvPercent;
 	}
 
-	static void setEsvRate(BigDecimal esvRate) {
-		thisInstance.esvRate = esvRate;
+	static void setEsvPercent(BigDecimal esvPercent) {
+		thisInstance.esvPercent = esvPercent;
 	}
 
 	static BigDecimal getMinSalary() {
@@ -108,19 +122,19 @@ class DataStorage implements Serializable  {
 		thisInstance.minSalary = minSalary;
 	}
 
-	static BigDecimal getAdditionalRate() {
-		return thisInstance.additionalRate;
+	static BigDecimal getAdditionalPercent() {
+		return thisInstance.additionalPercent;
 	}
 
-	static void setAdditionalRate(BigDecimal additionalRate) {
-		thisInstance.additionalRate = additionalRate;
+	static void setAdditionalPercent(BigDecimal additionalPercent) {
+		thisInstance.additionalPercent = additionalPercent;
 	}
 
-	static BigDecimal getTaxRate() {
-		return thisInstance.taxRate;
+	static BigDecimal getTaxPercent() {
+		return thisInstance.taxPercent;
 	}
 
-	static void setTaxRate(BigDecimal taxRate) {
-		thisInstance.taxRate = taxRate;
+	static void setTaxPercent(BigDecimal taxPercent) {
+		thisInstance.taxPercent = taxPercent;
 	}
 }

@@ -16,7 +16,7 @@ public class Entzp {
 			public void run() {
 				MainFrame frame = new MainFrame();
 				frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				frame.setTitle("Розрахунок оплати приватним підприємцям");
+				frame.setTitle("Розрахунок сум");
 				frame.setVisible(true);
 
 				frame.addWindowListener(new WindowAdapter() {
