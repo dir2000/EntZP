@@ -10,6 +10,8 @@ import java.io.IOException;
 public class Entzp {
 	static private DataStorage dataStorage;
 
+	/******************** STATIC METHODS ********************/
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override

@@ -18,9 +18,7 @@ class Bank implements Serializable {
 	private BigDecimal transactionFee = BigDecimal.ZERO;
 
 	static {
-		//1. Field
-		//2. Column header
-		//3. Is numeric
+		//1. Field name 2. Column header 3. Is numeric
 		columnFieldsInfo = new Object[5][];
 		columnFieldsInfo[0] = new Object[]{"id", "ID", false};
 		columnFieldsInfo[1] = new Object[]{"name", "Найменування", false};
@@ -29,7 +27,13 @@ class Bank implements Serializable {
 		columnFieldsInfo[4] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true};
 	}
 	
-	//STATIC METHODS
+	/******************** CONSTRUCTORS *********************/
+	
+	Bank(String name) {
+		this.name = name;
+	}
+
+	/******************** STATIC METHODS ********************/
 	
 	static int getFieldsCount() {
 		//Field[] fields = Bank.class.getDeclaredFields();
@@ -71,20 +75,15 @@ class Bank implements Serializable {
 	}
 	
 	
-	//OVERRIDED METHODS
+	/******************** NON-STATIC METHODS ********************/
+	
 	@Override
 	public String toString(){
 		return name;
 	}
 	
-	//CONSTRUCTORS
 	
-	Bank(String name) {
-		this.name = name;
-	}
-	
-	
-	//GETTERS AND SETTERS
+	/******************** GETTERS AND SETTERS ********************/
 
 	String getName() {
 		return name;

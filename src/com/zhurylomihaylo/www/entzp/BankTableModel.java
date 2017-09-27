@@ -8,11 +8,15 @@ import javax.swing.table.AbstractTableModel;
 class BankTableModel extends AbstractTableModel {
 	ArrayList<Bank> bankList;
 	private int [] hiddenColumns = new int [] {0}; 
+
+	/******************** CONSTRUCTORS *********************/
 	
 	BankTableModel(ArrayList<Bank> bankList){
 		this.bankList = bankList;
 	}
 
+	/******************** NON-STATIC METHODS ********************/
+	
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub

@@ -4,12 +4,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.*;
 import java.text.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 
 class MainFrame extends JFrame{
 	static final int DEFAULT_WIDTH = 700;
+
+	EditableCellRendererComponent rendComp;
 	
 	private JPanel settingsPane;
 	JButton addBankButton;
@@ -23,13 +27,17 @@ class MainFrame extends JFrame{
 	private JTable entTable;
 	private EntTableModel entTableModel;
 	
+	/******************** CONSTRUCTORS ********************/
+	
 	MainFrame(){
 		buildGUI();
 		defineListeners();
 	}
 	
+	/******************** NON-STATIC METHODS ********************/
+	
 	void buildGUI(){
-		//setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		rendComp = new EditableCellRendererComponent();
 		
 		settingsPane = new JPanel();
 		settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.Y_AXIS));
@@ -66,14 +74,17 @@ class MainFrame extends JFrame{
 		bankTable = new JTable(bankTableModel);
 		TableColumnModel columnModel = bankTable.getColumnModel();
 		
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
-		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(Bank.getFieldHeader(i));
-			if(Bank.isFieldNumeric(i))
-				column.setCellRenderer(rightRenderer);
-		}
+//		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+//		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+//		for (int i = 0; i < columnModel.getColumnCount(); i++) {
+//			TableColumn column = columnModel.getColumn(i);
+//			column.setHeaderValue(Bank.getFieldHeader(i));
+//			if(Bank.isFieldNumeric(i))
+//				column.setCellRenderer(rightRenderer);
+//			//JOptionPane.showMessageDialog(this, columnModel.get);
+//		}
+		bankTable.getTableHeader().setReorderingAllowed(false);
+		bankTable.setDefaultRenderer(Object.class, rendComp);
 		
 		for(int i : bankTableModel.getHiddenColumns()) {
 			bankTable.getColumnModel().getColumn(i).setMinWidth(0);	
@@ -131,16 +142,18 @@ class MainFrame extends JFrame{
 		
 		entTableModel = new EntTableModel(DataStorage.getEntList());
 		entTable = new JTable(entTableModel);
-		TableColumnModel columnModel = bankTable.getColumnModel();
+		TableColumnModel columnModel = entTable.getColumnModel();
 		
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
-		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(Ent.getFieldHeader(i));
-			if(Ent.isFieldNumeric(i))
-				column.setCellRenderer(rightRenderer);
-		}	
+//		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+//		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
+//		for (int i = 0; i < columnModel.getColumnCount(); i++) {
+//			TableColumn column = columnModel.getColumn(i);
+//			column.setHeaderValue(Ent.getFieldHeader(i));
+//			if(Ent.isFieldNumeric(i))
+//				column.setCellRenderer(rightRenderer);
+//		}
+		entTable.getTableHeader().setReorderingAllowed(false);
+		entTable.setDefaultRenderer(Object.class, rendComp);
 		
 		InputMap im = entTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);

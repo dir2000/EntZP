@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 class DataStorage implements Serializable  {
-	private static final long serialVersionUID = 1L;
+	static private final long serialVersionUID = 1L;
 	
 	static private DataStorage thisInstance;
 	static private final String FILE_NAME;
@@ -25,7 +25,6 @@ class DataStorage implements Serializable  {
 	private BigDecimal taxPercent = BigDecimal.ZERO;	
 	private BigDecimal additionalPercent = BigDecimal.ZERO;
 
-
 	static {
 		FILE_NAME = "data.ser";
 		File file = new File(FILE_NAME);
@@ -35,8 +34,7 @@ class DataStorage implements Serializable  {
 			thisInstance = new DataStorage();
 	}
 	
-	
-	//CONSTRUCTORS
+	/******************** CONSTRUCTORS *********************/
 	
 	private DataStorage() {
 		esvPercent = BigDecimal.valueOf(22.0);
@@ -67,8 +65,7 @@ class DataStorage implements Serializable  {
 		entList.add(ent);
 	}
 	
-	
-	//APPLIED METHODS
+	/******************** STATIC METHODS ********************/
 		
 	static void saveDataStorage() throws IOException{
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))){
@@ -94,9 +91,8 @@ class DataStorage implements Serializable  {
 			thisInstance = new DataStorage();
 		}
 	}
-
 	
-	//GETTERS AND SETTERS
+	/******************** GETTERS AND SETTERS ********************/
 	
 	static ArrayList<Bank> getBankList(){
 		return thisInstance.bankList;

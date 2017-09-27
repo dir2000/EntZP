@@ -1,6 +1,7 @@
 package com.zhurylomihaylo.www.entzp;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 class Ent implements Serializable {
@@ -11,31 +12,37 @@ class Ent implements Serializable {
 	private BigDecimal netPlus2 = BigDecimal.ZERO;
 	private BigDecimal esv = BigDecimal.ZERO;
 	private BigDecimal constTotal = BigDecimal.ZERO;	
-	private BigDecimal addPercent = BigDecimal.ZERO;
-	private BigDecimal taxPercent = BigDecimal.ZERO;
+	private BigDecimal addPayment = BigDecimal.ZERO;
+	private BigDecimal tax = BigDecimal.ZERO;
+	private Bank bank;
 	private BigDecimal bankServicePayment = BigDecimal.ZERO;
 	private BigDecimal totalAll = BigDecimal.ZERO;
 	
 	static {
-		//1. Field
-		//2. Column header
-		//3. Is numeric
+		//1. Field name 2. Column header 3. Is numeric 4. Editable
 		columnFieldsInfo = new Object[9][];
-		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false};
-		columnFieldsInfo[1] = new Object[]{"netPlus1", "Доплата 1", true};
-		columnFieldsInfo[2] = new Object[]{"netPlus2", "Доплата 2", true};
-		columnFieldsInfo[3] = new Object[]{"esv", "ЄСВ", true};
-		columnFieldsInfo[4] = new Object[]{"constTotal", "Всього витрат Нетто", true};
-		columnFieldsInfo[5] = new Object[]{"addPercent", "", true};
-		columnFieldsInfo[6] = new Object[]{"taxPercent", "", true};
-		columnFieldsInfo[7] = new Object[]{"bankServicePayment", "", true};
-		columnFieldsInfo[8] = new Object[]{"totalAll", "", true};
+		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false, true};
+		columnFieldsInfo[1] = new Object[]{"netPlus1", "Доплата 1", true, true};
+		columnFieldsInfo[2] = new Object[]{"netPlus2", "Доплата 2", true, true};
+		columnFieldsInfo[3] = new Object[]{"esv", "ЄСВ", true, false};
+		columnFieldsInfo[4] = new Object[]{"constTotal", "Всього витрат Нетто", true, false};
+		columnFieldsInfo[5] = new Object[]{"addPayment", "Додаткова оплата, %", true, false};
+		columnFieldsInfo[6] = new Object[]{"tax", "Єдиний податок", true, false};
+		columnFieldsInfo[6] = new Object[]{"bank", "Банк", false, true};		
+		columnFieldsInfo[7] = new Object[]{"bankServicePayment", "Послуги банку", true, false};
+		columnFieldsInfo[8] = new Object[]{"totalAll", "Всього", true, false};
 				
 //		columnFieldsInfo[3] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %", true};
 //		columnFieldsInfo[4] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true};
 	}
-
-	//STATIC METHODS
+	
+	/******************** CONSTRUCTORS ********************/
+	
+	Ent(String name) {
+		this.name = name;
+	}
+	
+	/******************** STATIC METHODS ********************/
 	
 	static int getFieldsCount() {
 		//Field[] fields = Bank.class.getDeclaredFields();
@@ -45,11 +52,15 @@ class Ent implements Serializable {
 	static String getFieldHeader(int index){
 		return (String) columnFieldsInfo[index][1]; 
 	}
+
 	static boolean isFieldNumeric(int index){
 		return (boolean) columnFieldsInfo[index][2]; 
 	}
 
-	
+	static boolean isFieldEditable(int index){
+		return (boolean) columnFieldsInfo[index][3]; 
+	}	
+	/******************** NON-STATIC METHODS ********************/
 	
 	Object getFieldValue(int fieldIndex) {
 		try {
@@ -59,16 +70,25 @@ class Ent implements Serializable {
 		}
 		return null;
 	}
-
 	
-	//CONSTRUCTORS
-	
-	Ent(String name) {
-		this.name = name;
+	void setFieldValue(int fieldIndex, Object value) {
+		try {
+			Field field = getClass().getDeclaredField((String) columnFieldsInfo[fieldIndex][0]);
+			if (field.getType() == Class.forName("java.math.BigDecimal"))
+				field.set(this, BigDecimal.valueOf(Double.parseDouble((String) value)));
+			else
+				field.set(this, value);
+			//.set(this, value);
+		} 
+		catch (NumberFormatException ex){
+			//do nothing
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
-	
-	
-	//GETTERS AND SETTERS
+
+	/******************** GETTERS AND SETTERS ********************/
 	
 	String getName() {
 		return name;
@@ -118,20 +138,20 @@ class Ent implements Serializable {
 		this.constTotal = constTotal;
 	}
 
-	BigDecimal getAddPercent() {
-		return addPercent;
+	BigDecimal getAddPayment() {
+		return addPayment;
 	}
 
-	void setAddPercent(BigDecimal addPercent) {
-		this.addPercent = addPercent;
+	void setAddPayment(BigDecimal addPercent) {
+		this.addPayment = addPercent;
 	}
 
-	BigDecimal getTaxPercent() {
-		return taxPercent;
+	BigDecimal getTax() {
+		return tax;
 	}
 
-	void setTaxPercent(BigDecimal taxPercent) {
-		this.taxPercent = taxPercent;
+	void setTax(BigDecimal taxPercent) {
+		this.tax = taxPercent;
 	}
 
 	BigDecimal getBankServicePayment() {
