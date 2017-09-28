@@ -45,19 +45,9 @@ class DataStorage implements Serializable  {
 		//
 		
 		bankList = new ArrayList<>();
-
-		Bank bank = new Bank("Аваль");
-		bank.setMonthlyFee(BigDecimal.valueOf(50D));
-		bank.setTransactionComission(BigDecimal.valueOf(0.0085));
-		bank.setTransactionFee(BigDecimal.valueOf(5D));
-		bankList.add(bank);
-
-		Bank bank2 = new Bank("Приватбанк");
-		bank2.setMonthlyFee(BigDecimal.valueOf(30D));
-		bank2.setTransactionComission(BigDecimal.valueOf(0.0085));
-		bank2.setTransactionFee(BigDecimal.valueOf(5D));
-		bankList.add(bank2);
-		
+		bankList.add(new Bank("Аваль", 50.0, 0.0085, 5.0));
+		bankList.add(new Bank("Приватбанк", 30.0, 0.0085, 5.0));
+	
 		//
 		
 		entList = new ArrayList<>();

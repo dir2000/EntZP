@@ -7,15 +7,16 @@ import java.util.UUID;
 
 import javax.swing.JOptionPane;
 
-class Bank implements Serializable {
+class Bank implements Serializable, EdiTableObject 
+{
 	private static Object[][] columnFieldsInfo;
 	static final int ID_COLUMN = 0;
 	
-	private UUID id = UUID.randomUUID();
-	private String name;
-	private BigDecimal monthlyFee = BigDecimal.ZERO;
-	private BigDecimal transactionComission = BigDecimal.ZERO;
-	private BigDecimal transactionFee = BigDecimal.ZERO;
+	UUID id = UUID.randomUUID();
+	String name;
+	BigDecimal monthlyFee = BigDecimal.ZERO;
+	BigDecimal transactionComission = BigDecimal.ZERO;
+	BigDecimal transactionFee = BigDecimal.ZERO;
 
 	static {
 		//1. Field name 2. Column header 3. Is numeric
@@ -31,8 +32,14 @@ class Bank implements Serializable {
 	
 	Bank(String name) {
 		this.name = name;
+	}	
+	
+	Bank(String name, double monthlyFee, double transactionComission, double transactionFee) {
+		this.name = name;
+		this.monthlyFee = BigDecimal.valueOf(monthlyFee);
+		this.transactionComission = BigDecimal.valueOf(transactionComission);
+		this.transactionFee = BigDecimal.valueOf(transactionFee);
 	}
-
 	/******************** STATIC METHODS ********************/
 	
 	static int getFieldsCount() {
@@ -40,9 +47,28 @@ class Bank implements Serializable {
 		return columnFieldsInfo.length;
 	}
 	
+	static String getFieldHeader(int index){
+		return (String) columnFieldsInfo[index][FIELD_HEADER]; 
+	}
+
+	static boolean isFieldNumeric(int index){
+		return (boolean) columnFieldsInfo[index][FIELD_IS_NUMERIC]; 
+	}
+
+	static boolean isFieldEditable(int index){
+		return (boolean) columnFieldsInfo[index][FIELD_IS_EDITABLE]; 
+	}	
+	
+	/******************** NON_STATIC METHODS *********************/
+	
+	@Override
+	public String toString(){
+		return name;
+	}
+	
 	Object getFieldValue(int fieldIndex) {
 		try {
-			return getClass().getDeclaredField((String) columnFieldsInfo[fieldIndex][0]).get(this);
+			return getClass().getDeclaredField((String) columnFieldsInfo[fieldIndex][FIELD_NAME]).get(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +77,7 @@ class Bank implements Serializable {
 	
 	void setFieldValue(int fieldIndex, Object value) {
 		try {
-			Field field = getClass().getDeclaredField((String) columnFieldsInfo[fieldIndex][0]);
+			Field field = getClass().getDeclaredField((String) columnFieldsInfo[fieldIndex][FIELD_NAME]);
 			if (field.getType() == Class.forName("java.math.BigDecimal"))
 				field.set(this, BigDecimal.valueOf(Double.parseDouble((String) value)));
 			else
@@ -64,59 +90,6 @@ class Bank implements Serializable {
 		catch (Exception e) {
 			e.printStackTrace();
 		}		
-	}
-	
-	static String getFieldHeader(int index){
-		return (String) columnFieldsInfo[index][1]; 
-	}
-	
-	static boolean isFieldNumeric(int index){
-		return (boolean) columnFieldsInfo[index][2]; 
-	}
-	
-	
-	/******************** NON-STATIC METHODS ********************/
-	
-	@Override
-	public String toString(){
-		return name;
-	}
-	
-	
-	/******************** GETTERS AND SETTERS ********************/
-
-	String getName() {
-		return name;
-	}
-
-	void setName(String name) {
-		this.name = name;
-	}
-
-	BigDecimal getMonthlyFee() {
-		return monthlyFee;
-	}
-
-	void setMonthlyFee(BigDecimal monthlyFee) {
-		this.monthlyFee = monthlyFee;
-	}
-
-	BigDecimal getTransactionComission() {
-		return transactionComission;
-	}
-
-	void setTransactionComission(BigDecimal transactionComission) {
-		this.transactionComission = transactionComission;
-	}
-
-	BigDecimal getTransactionFee() {
-		return transactionFee;
-	}
-
-	void setTransactionFee(BigDecimal transactionFee) {
-		this.transactionFee = transactionFee;
-	}
-	
-	//OTHER
+	}	
 	
 }

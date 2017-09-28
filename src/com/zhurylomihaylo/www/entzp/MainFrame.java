@@ -74,15 +74,10 @@ class MainFrame extends JFrame{
 		bankTable = new JTable(bankTableModel);
 		TableColumnModel columnModel = bankTable.getColumnModel();
 		
-//		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-//		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
-//		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-//			TableColumn column = columnModel.getColumn(i);
-//			column.setHeaderValue(Bank.getFieldHeader(i));
-//			if(Bank.isFieldNumeric(i))
-//				column.setCellRenderer(rightRenderer);
-//			//JOptionPane.showMessageDialog(this, columnModel.get);
-//		}
+		for (int i = 0; i < columnModel.getColumnCount(); i++) {
+			TableColumn column = columnModel.getColumn(i);
+			column.setHeaderValue(Bank.getFieldHeader(i));
+		}
 		bankTable.getTableHeader().setReorderingAllowed(false);
 		bankTable.setDefaultRenderer(Object.class, rendComp);
 		
@@ -144,14 +139,10 @@ class MainFrame extends JFrame{
 		entTable = new JTable(entTableModel);
 		TableColumnModel columnModel = entTable.getColumnModel();
 		
-//		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-//		rightRenderer.setHorizontalAlignment(DefaultTableCellRenderer.RIGHT);
-//		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-//			TableColumn column = columnModel.getColumn(i);
-//			column.setHeaderValue(Ent.getFieldHeader(i));
-//			if(Ent.isFieldNumeric(i))
-//				column.setCellRenderer(rightRenderer);
-//		}
+		for (int i = 0; i < columnModel.getColumnCount(); i++) {
+			TableColumn column = columnModel.getColumn(i);
+			column.setHeaderValue(Ent.getFieldHeader(i));
+		}
 		entTable.getTableHeader().setReorderingAllowed(false);
 		entTable.setDefaultRenderer(Object.class, rendComp);
 		
@@ -200,7 +191,7 @@ class MainFrame extends JFrame{
 				Bank bank = DataStorage.getBankList().get(selectedRow);
 				int reply = JOptionPane.showOptionDialog(
 						MainFrame.this,
-						"¬и д≥йсно бажаЇте вилучити \"" + bank.getName() + "\"?",
+						"¬и д≥йсно бажаЇте вилучити \"" + bank + "\"?",
 						"”вага",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
