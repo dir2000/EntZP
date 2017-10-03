@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import javax.swing.JOptionPane;
 
-class Bank implements Serializable, EdiTableObject 
+class Bank implements Serializable, EdiTableObject  
 {
 	private static Object[][] columnFieldsInfo;
 	static final int ID_COLUMN = 0;
@@ -40,25 +40,25 @@ class Bank implements Serializable, EdiTableObject
 		this.transactionComission = BigDecimal.valueOf(transactionComission);
 		this.transactionFee = BigDecimal.valueOf(transactionFee);
 	}
-	/******************** STATIC METHODS ********************/
 	
-	static int getFieldsCount() {
-		//Field[] fields = Bank.class.getDeclaredFields();
+	/******************** STATIC METHODS *********************/
+	
+	static public int getFieldsCount() {
 		return columnFieldsInfo.length;
 	}
 	
-	static String getFieldHeader(int index){
+	static public String getFieldHeader(int index){
 		return (String) columnFieldsInfo[index][FIELD_HEADER]; 
 	}
 
-	static boolean isFieldNumeric(int index){
+	static public boolean isFieldNumeric(int index){
 		return (boolean) columnFieldsInfo[index][FIELD_IS_NUMERIC]; 
 	}
 
-	static boolean isFieldEditable(int index){
+	static public boolean isFieldEditable(int index){
 		return (boolean) columnFieldsInfo[index][FIELD_IS_EDITABLE]; 
 	}	
-	
+
 	/******************** NON_STATIC METHODS *********************/
 	
 	@Override

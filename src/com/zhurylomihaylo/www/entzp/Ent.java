@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
-class Ent implements Serializable, EdiTableObject {
+class Ent  implements Serializable, EdiTableObject {
 	private static Object[][] columnFieldsInfo;
 	String name;
 	BigDecimal net = BigDecimal.ZERO;
@@ -34,31 +34,32 @@ class Ent implements Serializable, EdiTableObject {
 	}
 	
 	/******************** CONSTRUCTORS ********************/
-	
+
 	Ent(String name) {
 		this.name = name;
 	}
-	/******************** STATIC METHODS ********************/
+
+	/******************** STATIC METHODS *********************/
 	
-	static int getFieldsCount() {
-		//Field[] fields = Bank.class.getDeclaredFields();
+	static public int getFieldsCount() {
 		return columnFieldsInfo.length;
 	}
 	
-	static String getFieldHeader(int index){
+	static public String getFieldHeader(int index){
 		return (String) columnFieldsInfo[index][FIELD_HEADER]; 
 	}
 
-	static boolean isFieldNumeric(int index){
+	static public boolean isFieldNumeric(int index){
 		return (boolean) columnFieldsInfo[index][FIELD_IS_NUMERIC]; 
 	}
 
-	static boolean isFieldEditable(int index){
+	static public boolean isFieldEditable(int index){
 		return (boolean) columnFieldsInfo[index][FIELD_IS_EDITABLE]; 
 	}	
 	
 	/******************** NON_STATIC METHODS *********************/
 	
+
 	@Override
 	public String toString(){
 		return name;
@@ -89,5 +90,4 @@ class Ent implements Serializable, EdiTableObject {
 			e.printStackTrace();
 		}		
 	}	
-
 }
