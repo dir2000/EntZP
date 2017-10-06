@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -18,8 +19,8 @@ class DataStorage implements Serializable  {
 	static private DataStorage thisInstance;
 	static private final String FILE_NAME;
 	
-	private ArrayList<Bank> bankList;
-	private ArrayList<Ent> entList;
+	private ArrayList<EdiTableObject> bankList;
+	private ArrayList<EdiTableObject> entList;
 	private BigDecimal minSalary = BigDecimal.ZERO;	
 	private BigDecimal esvPercent = BigDecimal.ZERO;
 	private BigDecimal taxPercent = BigDecimal.ZERO;	
@@ -72,7 +73,7 @@ class DataStorage implements Serializable  {
 		{
 			thisInstance = (DataStorage) oin.readObject();			
 		} catch (java.io.InvalidClassException ex){
-			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": застарілий формат файлу.");
+			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": змінився формат файлу.");
 			thisInstance = new DataStorage();
 		} 
 		catch (Exception ex){
@@ -84,11 +85,15 @@ class DataStorage implements Serializable  {
 	
 	/******************** GETTERS AND SETTERS ********************/
 	
-	static ArrayList<Bank> getBankList(){
+	static ArrayList<EdiTableObject> getBankList(){
 		return thisInstance.bankList;
 	}	
 
-	static ArrayList<Ent> getEntList(){
+	static ArrayList<EdiTableObject> getEntList(){
+		return thisInstance.entList;
+	}	
+
+	static ArrayList<EdiTableObject> getList(){
 		return thisInstance.entList;
 	}	
 	

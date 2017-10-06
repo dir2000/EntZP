@@ -19,13 +19,13 @@ class MainFrame extends JFrame{
 	JButton addBankButton;
 	JButton deleteBankButton;
 	private JTable bankTable;
-	private BankTableModel bankTableModel;
+	private EdiTableModel bankTableModel;
 	
 	private JPanel entPane;
 	JButton addEntButton;
 	JButton deleteEntButton;
 	private JTable entTable;
-	private EntTableModel entTableModel;
+	private EdiTableModel entTableModel;
 	
 	/******************** CONSTRUCTORS ********************/
 	
@@ -70,21 +70,21 @@ class MainFrame extends JFrame{
 		banksPane.add(banksButtonsPane);
 		
 		
-		bankTableModel = new BankTableModel(DataStorage.getBankList());
+		bankTableModel = new EdiTableModel(Bank.class, DataStorage.getBankList());
 		bankTable = new JTable(bankTableModel);
 		TableColumnModel columnModel = bankTable.getColumnModel();
 		
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(Bank.getFieldHeader(i));
+			column.setHeaderValue(EdiTableObject.getFieldHeader(Bank.class, i));
 		}
 		bankTable.getTableHeader().setReorderingAllowed(false);
 		bankTable.setDefaultRenderer(Object.class, rendComp);
 		
-		for(int i : bankTableModel.getHiddenColumns()) {
-			bankTable.getColumnModel().getColumn(i).setMinWidth(0);	
-			bankTable.getColumnModel().getColumn(i).setMaxWidth(0);
-		}
+//		for(int i : bankTableModel.getHiddenColumns()) {
+//			bankTable.getColumnModel().getColumn(i).setMinWidth(0);	
+//			bankTable.getColumnModel().getColumn(i).setMaxWidth(0);
+//		}
 		
 		InputMap im = bankTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
@@ -135,13 +135,13 @@ class MainFrame extends JFrame{
 		buttonsPane.add(deleteEntButton);
 		entPane.add(buttonsPane);
 		
-		entTableModel = new EntTableModel(DataStorage.getEntList());
+		entTableModel = new EdiTableModel(Ent.class, DataStorage.getEntList());
 		entTable = new JTable(entTableModel);
 		TableColumnModel columnModel = entTable.getColumnModel();
 		
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(Ent.getFieldHeader(i));
+			column.setHeaderValue(EdiTableObject.getFieldHeader(Ent.class, i));
 		}
 		entTable.getTableHeader().setReorderingAllowed(false);
 		entTable.setDefaultRenderer(Object.class, rendComp);
@@ -188,7 +188,7 @@ class MainFrame extends JFrame{
 				if (selectedRow < 0)
 					return;
 				
-				Bank bank = DataStorage.getBankList().get(selectedRow);
+				EdiTableObject bank = DataStorage.getBankList().get(selectedRow);
 				int reply = JOptionPane.showOptionDialog(
 						MainFrame.this,
 						"¬и д≥йсно бажаЇте вилучити \"" + bank + "\"?",

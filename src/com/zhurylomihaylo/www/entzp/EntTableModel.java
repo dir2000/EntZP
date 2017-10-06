@@ -3,43 +3,42 @@ package com.zhurylomihaylo.www.entzp;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-class EntTableModel extends AbstractTableModel {
-	ArrayList<Ent> entList;
+class EdiTableModel extends AbstractTableModel {
+	ArrayList<EdiTableObject> listOfObjects;
+	Class realClass;
 	
 	/******************** CONSTRUCTORS *********************/
 	
-	EntTableModel(ArrayList<Ent> entList){
-		this.entList = entList;
+	EdiTableModel(Class realClass, ArrayList<EdiTableObject> listOfObjects){
+		this.listOfObjects = listOfObjects;
+		this.realClass = realClass;
 	}	
 	
 	/******************** NON-STATIC METHODS ********************/
 	
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return Ent.getFieldsCount();
+		return EdiTableObject.getFieldsCount(realClass);
 	}
 
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return entList.size();
+		return listOfObjects.size();
 	}
 
 	@Override
 	public Object getValueAt(int arg0, int arg1) {
-		Ent ent = entList.get(arg0);
-		return ent.getFieldValue(arg1);
+		EdiTableObject obj = listOfObjects.get(arg0);
+		return obj.getFieldValue(realClass, arg1);
 	}
 	
 	@Override	
 	public void setValueAt(Object value, int r, int c) {
-		Ent ent = DataStorage.getEntList().get(r);
-		ent.setFieldValue(c, value);
-		//JOptionPane.showMessageDialog(null, bank);
+		EdiTableObject ent = DataStorage.getEntList().get(r);
+		ent.setFieldValue(realClass, c, value);
 	}
 	
 	public boolean isCellEditable(int r, int c){
-		return Ent.isFieldEditable(c);
+		return EdiTableObject.isFieldEditable(realClass, c);
 	}		
 }
