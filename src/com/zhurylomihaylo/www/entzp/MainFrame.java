@@ -16,6 +16,8 @@ class MainFrame extends JFrame{
 	EditableCellRendererComponent rendComp;
 	
 	private JPanel settingsPane;
+	
+	JPanel banksPane;
 	JButton addBankButton;
 	JButton deleteBankButton;
 	private JTable bankTable;
@@ -31,7 +33,7 @@ class MainFrame extends JFrame{
 	
 	MainFrame(){
 		buildGUI();
-		defineListeners();
+		setListeners();
 	}
 	
 	/******************** NON-STATIC METHODS ********************/
@@ -44,8 +46,6 @@ class MainFrame extends JFrame{
 		add(settingsPane, BorderLayout.NORTH);
 
 		entPane = new JPanel();
-		entPane.setBorder(BorderFactory.createTitledBorder("Особи"));
-		entPane.setLayout(new BoxLayout(entPane, BoxLayout.Y_AXIS));
 		add(entPane, BorderLayout.CENTER);
 		
 		buildGUIBanks();
@@ -54,47 +54,59 @@ class MainFrame extends JFrame{
 		
 		pack();
 	}
+	void buildGUITablePane(Class cl, JPanel pane, String title, TableModel tableModel, JTable table, JButton addButton, JButton deleteButton){
+		pane.setBorder(BorderFactory.createTitledBorder(title));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 	
-	void buildGUIBanks(){
-		JPanel banksPane = new JPanel();
-		banksPane.setBorder(BorderFactory.createTitledBorder("Тарифи банків"));
-		banksPane.setLayout(new BoxLayout(banksPane, BoxLayout.Y_AXIS));
-	
+		JPanel buttonsPane = new JPanel();
+		buttonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		//addButton = new JButton("Додати");
+		buttonsPane.add(addButton);
+		//deleteButton = new JButton("Вилучити");
+		buttonsPane.add(deleteButton);
+		pane.add(buttonsPane);
 		
-		JPanel banksButtonsPane = new JPanel();
-		banksButtonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
-		addBankButton = new JButton("Додати");
-		banksButtonsPane.add(addBankButton);
-		deleteBankButton = new JButton("Вилучити");
-		banksButtonsPane.add(deleteBankButton);
-		banksPane.add(banksButtonsPane);
-		
-		
-		bankTableModel = new EdiTableModel(Bank.class, DataStorage.getBankList());
-		bankTable = new JTable(bankTableModel);
-		TableColumnModel columnModel = bankTable.getColumnModel();
+		tableModel = new EdiTableModel(cl, DataStorage.getList(cl));
+		table = new JTable(tableModel);
+		TableColumnModel columnModel = table.getColumnModel();
 		
 		for (int i = 0; i < columnModel.getColumnCount(); i++) {
 			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(EdiTableObject.getFieldHeader(Bank.class, i));
+			column.setHeaderValue(EdiTableObject.getFieldHeader(cl, i));
 		}
-		bankTable.getTableHeader().setReorderingAllowed(false);
-		bankTable.setDefaultRenderer(Object.class, rendComp);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setDefaultRenderer(Object.class, rendComp);
 		
 //		for(int i : bankTableModel.getHiddenColumns()) {
 //			bankTable.getColumnModel().getColumn(i).setMinWidth(0);	
 //			bankTable.getColumnModel().getColumn(i).setMaxWidth(0);
 //		}
 		
-		InputMap im = bankTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		InputMap im = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 		im.put(enter, im.get(f2));		
 		
-		JScrollPane scrollPane = new JScrollPane(bankTable);
+		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createEtchedBorder());
 		scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, 100));		
-		banksPane.add(scrollPane);
+		pane.add(scrollPane);
+	}
+	
+	void buildGUIBanks(){
+		JPanel banksPane = new JPanel();
+		JPanel banksButtonsPane = new JPanel();		
+		addBankButton = new JButton("Додати банк");		
+		deleteBankButton = new JButton("Вилучити");
+		
+//		Class bankClass = Bank.class;
+//		DataStorage.getList(bankClass);
+//		ArrayList<EdiTableObject> bankList = DataStorage.getList(bankClass);
+//		bankTableModel = new EdiTableModel(bankClass, bankList);
+		bankTableModel = new EdiTableModel(Bank.class, DataStorage.getList(Bank.class));
+		bankTable = new JTable(bankTableModel);
+
+		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, addBankButton, deleteBankButton);		
 		
 		settingsPane.add(banksPane);		
 	}
@@ -128,34 +140,12 @@ class MainFrame extends JFrame{
 	
 	void buildGUIEnts(){
 		JPanel buttonsPane = new JPanel();
-		buttonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
-		addEntButton = new JButton("Додати");
-		buttonsPane.add(addEntButton);
+		addEntButton = new JButton("Додати особу");
 		deleteEntButton = new JButton("Вилучити");
-		buttonsPane.add(deleteEntButton);
-		entPane.add(buttonsPane);
-		
-		entTableModel = new EdiTableModel(Ent.class, DataStorage.getEntList());
+		entTableModel = new EdiTableModel(Ent.class, DataStorage.getList(Ent.class));
 		entTable = new JTable(entTableModel);
-		TableColumnModel columnModel = entTable.getColumnModel();
-		
-		for (int i = 0; i < columnModel.getColumnCount(); i++) {
-			TableColumn column = columnModel.getColumn(i);
-			column.setHeaderValue(EdiTableObject.getFieldHeader(Ent.class, i));
-		}
-		entTable.getTableHeader().setReorderingAllowed(false);
-		entTable.setDefaultRenderer(Object.class, rendComp);
-		
-		InputMap im = entTable.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
-		im.put(enter, im.get(f2));		
-		
-		JScrollPane scrollPane = new JScrollPane(entTable);
-		scrollPane.setBorder(BorderFactory.createEtchedBorder());
-		scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, 100));		
-		entPane.add(scrollPane);
-		
+
+		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, addEntButton, deleteEntButton);
 	}
 	
 	void makeFormattedField(JPanel pane, BigDecimal value){
@@ -172,14 +162,16 @@ class MainFrame extends JFrame{
 	   // BigDecimal bigValue = (BigDecimal) f.getValue();		
 	}
 	
-	void defineListeners(){
-		addBankButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				DataStorage.getBankList().add(new Bank("Новий банк"));
-				bankTableModel.fireTableDataChanged();
-			}
-		});
+	void setListeners(){
+		setAddListener(addBankButton, Bank.class, bankTableModel);
+//		
+//		addBankButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				DataStorage.getList(Bank.class).add(new Bank("Новий банк"));
+//				bankTableModel.fireTableDataChanged();
+//			}
+//		});
 		
 		deleteBankButton.addActionListener(new ActionListener() {
 			@Override
@@ -188,7 +180,7 @@ class MainFrame extends JFrame{
 				if (selectedRow < 0)
 					return;
 				
-				EdiTableObject bank = DataStorage.getBankList().get(selectedRow);
+				EdiTableObject bank = DataStorage.getList(Bank.class).get(selectedRow);
 				int reply = JOptionPane.showOptionDialog(
 						MainFrame.this,
 						"Ви дійсно бажаєте вилучити \"" + bank + "\"?",
@@ -198,12 +190,26 @@ class MainFrame extends JFrame{
 						null,
 						new String [] {"Так", "Ні"}, "Так");
 		        if (reply == JOptionPane.YES_OPTION) {
-		        	DataStorage.getBankList().remove(bank);
+		        	DataStorage.getList(Bank.class).remove(bank);
 		        	bankTableModel.fireTableDataChanged();
 		        }
 			}
 		});
-		
+	}
+	
+	void setAddListener(JButton button, Class cl, EdiTableModel tableModel) {
+		ActionListener al = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					DataStorage.getList(cl).add((EdiTableObject) cl.newInstance());
+					tableModel.fireTableDataChanged();
+				} catch(Exception ex) {
+					JOptionPane.showMessageDialog(MainFrame.this, ex);
+				}
+			}
+		};
+		button.addActionListener(al);		
 	}
 	
 }

@@ -36,14 +36,15 @@ class Ent  implements Serializable, EdiTableObject {
 	}
 	
 	/******************** CONSTRUCTORS ********************/
+	Ent() {
+		this.name = "Нова особа";
+	}
 
 	Ent(String name) {
 		this.name = name;
 	}
 
-	
 	/******************** NON_STATIC METHODS *********************/
-	
 
 	@Override
 	public String toString(){

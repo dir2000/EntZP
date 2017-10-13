@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -21,6 +22,8 @@ class DataStorage implements Serializable  {
 	
 	private ArrayList<EdiTableObject> bankList;
 	private ArrayList<EdiTableObject> entList;
+	private HashMap<Class, ArrayList<EdiTableObject>> allLists;
+	
 	private BigDecimal minSalary = BigDecimal.ZERO;	
 	private BigDecimal esvPercent = BigDecimal.ZERO;
 	private BigDecimal taxPercent = BigDecimal.ZERO;	
@@ -43,17 +46,16 @@ class DataStorage implements Serializable  {
 		additionalPercent = BigDecimal.valueOf(5.0);
 		taxPercent = BigDecimal.valueOf(5.0);
 
-		//
+		allLists = new HashMap<>();
 		
 		bankList = new ArrayList<>();
 		bankList.add(new Bank("Аваль", 50.0, 0.0085, 5.0));
 		bankList.add(new Bank("Приватбанк", 30.0, 0.0085, 5.0));
-	
-		//
+		allLists.put(Bank.class, bankList);
 		
 		entList = new ArrayList<>();
-		Ent ent = new Ent("Іванов Петро Сидорович");
-		entList.add(ent);
+		entList.add(new Ent("Іванов Петро Сидорович"));
+		allLists.put(Ent.class, entList);
 	}
 	
 	/******************** STATIC METHODS ********************/
@@ -63,9 +65,9 @@ class DataStorage implements Serializable  {
 			oos.writeObject(thisInstance);
 			oos.flush();
 		}
-//		catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
+		catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
+		}
 	}
 
 	private static void readDataStorage(File file) {
@@ -85,16 +87,16 @@ class DataStorage implements Serializable  {
 	
 	/******************** GETTERS AND SETTERS ********************/
 	
-	static ArrayList<EdiTableObject> getBankList(){
-		return thisInstance.bankList;
-	}	
+//	static ArrayList<EdiTableObject> getBankList(){
+//		return thisInstance.bankList;
+//	}	
+//
+//	static ArrayList<EdiTableObject> getEntList(){
+//		return thisInstance.entList;
+//	}	
 
-	static ArrayList<EdiTableObject> getEntList(){
-		return thisInstance.entList;
-	}	
-
-	static ArrayList<EdiTableObject> getList(){
-		return thisInstance.entList;
+	static ArrayList<EdiTableObject> getList(Class cl){
+		return thisInstance.allLists.get(cl);
 	}	
 	
 	static BigDecimal getEsvPercent() {
