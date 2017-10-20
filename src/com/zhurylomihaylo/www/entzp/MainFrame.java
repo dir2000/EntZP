@@ -12,26 +12,31 @@ import javax.swing.text.*;
 
 class MainFrame extends JFrame{
 	static final int DEFAULT_WIDTH = 700;
+	static MainFrame mainFrame;
 
 	EditableCellRendererComponent rendComp;
 	
 	private JPanel settingsPane;
 	
-	JPanel banksPane;
-	JButton addBankButton;
-	JButton deleteBankButton;
-	private JTable bankTable;
-	private EdiTableModel bankTableModel;
+	private JPanel banksPane = new JPanel();
+	private JButton addBankButton = new JButton("Додати банк");		
+	private JButton deleteBankButton = new JButton("Вилучити банк");
+	private static EdiTableModel bankTableModel = new EdiTableModel(Bank.class, DataStorage.getList(Bank.class));
+	static JTable bankTable = new JTable(bankTableModel);	
 	
-	private JPanel entPane;
-	JButton addEntButton;
-	JButton deleteEntButton;
-	private JTable entTable;
-	private EdiTableModel entTableModel;
+	private JPanel entPane = new JPanel();
+	private JButton addEntButton = new JButton("Додати особу");
+	private JButton deleteEntButton = new JButton("Вилучити особу");
+	private EdiTableModel entTableModel = new EdiTableModel(Ent.class, DataStorage.getList(Ent.class));
+	private JTable entTable = new JTable(entTableModel);
+	
+	JButton testButton = new JButton("Test");
 	
 	/******************** CONSTRUCTORS ********************/
 	
 	MainFrame(){
+		mainFrame = this;
+		
 		buildGUI();
 		setListeners();
 	}
@@ -45,24 +50,32 @@ class MainFrame extends JFrame{
 		settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.Y_AXIS));
 		add(settingsPane, BorderLayout.NORTH);
 
-		entPane = new JPanel();
-		add(entPane, BorderLayout.CENTER);
+		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, addBankButton, deleteBankButton);		
+		settingsPane.add(banksPane);		
+
+		testButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(MainFrame.this, bankTable.getSelectedRow());
+			}
+		});
+		settingsPane.add(testButton);
 		
-		buildGUIBanks();
 		buildGUIConsts();
-		buildGUIEnts();
+		
+		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, addEntButton, deleteEntButton);
+		add(entPane, BorderLayout.CENTER);
 		
 		pack();
 	}
+	
 	void buildGUITablePane(Class cl, JPanel pane, String title, TableModel tableModel, JTable table, JButton addButton, JButton deleteButton){
 		pane.setBorder(BorderFactory.createTitledBorder(title));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 	
 		JPanel buttonsPane = new JPanel();
 		buttonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//addButton = new JButton("Додати");
 		buttonsPane.add(addButton);
-		//deleteButton = new JButton("Вилучити");
 		buttonsPane.add(deleteButton);
 		pane.add(buttonsPane);
 		
@@ -93,24 +106,6 @@ class MainFrame extends JFrame{
 		pane.add(scrollPane);
 	}
 	
-	void buildGUIBanks(){
-		JPanel banksPane = new JPanel();
-		JPanel banksButtonsPane = new JPanel();		
-		addBankButton = new JButton("Додати банк");		
-		deleteBankButton = new JButton("Вилучити");
-		
-//		Class bankClass = Bank.class;
-//		DataStorage.getList(bankClass);
-//		ArrayList<EdiTableObject> bankList = DataStorage.getList(bankClass);
-//		bankTableModel = new EdiTableModel(bankClass, bankList);
-		bankTableModel = new EdiTableModel(Bank.class, DataStorage.getList(Bank.class));
-		bankTable = new JTable(bankTableModel);
-
-		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, addBankButton, deleteBankButton);		
-		
-		settingsPane.add(banksPane);		
-	}
-	
 	void buildGUIConsts(){
 		JPanel constPane = new JPanel();
 		constPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -138,16 +133,6 @@ class MainFrame extends JFrame{
 
 	}
 	
-	void buildGUIEnts(){
-		JPanel buttonsPane = new JPanel();
-		addEntButton = new JButton("Додати особу");
-		deleteEntButton = new JButton("Вилучити");
-		entTableModel = new EdiTableModel(Ent.class, DataStorage.getList(Ent.class));
-		entTable = new JTable(entTableModel);
-
-		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, addEntButton, deleteEntButton);
-	}
-	
 	void makeFormattedField(JPanel pane, BigDecimal value){
 		JFormattedTextField field = new JFormattedTextField(value);
 		field.setPreferredSize(new Dimension(100, (int) field.getPreferredSize().getHeight()));
@@ -164,7 +149,7 @@ class MainFrame extends JFrame{
 	
 	void setListeners(){
 		setAddListener(addBankButton, Bank.class, bankTableModel);
-//		
+		
 //		addBankButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e) {

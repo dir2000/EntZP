@@ -2,6 +2,7 @@ package com.zhurylomihaylo.www.entzp;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Date;
 
 class EdiTableModel extends AbstractTableModel {
 	ArrayList<EdiTableObject> listOfObjects;
@@ -18,11 +19,13 @@ class EdiTableModel extends AbstractTableModel {
 	
 	@Override
 	public int getColumnCount() {
+		//System.out.println(new Date() + " - getColumnCount - " + EdiTableObject.getFieldsCount(realClass));
 		return EdiTableObject.getFieldsCount(realClass);
 	}
 
 	@Override
 	public int getRowCount() {
+		System.out.println(new Date() + " - " + realClass + " - getSelectedColumn - (" + MainFrame.bankTable.getColumnSelectionAllowed() + ")");
 		return listOfObjects.size();
 	}
 
