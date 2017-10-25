@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -20,9 +21,9 @@ class DataStorage implements Serializable  {
 	static private DataStorage thisInstance;
 	static private final String FILE_NAME;
 	
-	private ArrayList<EdiTableObject> bankList;
-	private ArrayList<EdiTableObject> entList;
-	private HashMap<Class, ArrayList<EdiTableObject>> allLists;
+	private Vector<EdiTableObject> bankList;
+	private Vector<EdiTableObject> entList;
+	private HashMap<Class, Vector<EdiTableObject>> allLists;
 	
 	private BigDecimal minSalary = BigDecimal.ZERO;	
 	private BigDecimal esvPercent = BigDecimal.ZERO;
@@ -48,12 +49,12 @@ class DataStorage implements Serializable  {
 
 		allLists = new HashMap<>();
 		
-		bankList = new ArrayList<>();
+		bankList = new Vector<>();
 		bankList.add(new Bank("Аваль", 50.0, 0.0085, 5.0));
 		bankList.add(new Bank("Приватбанк", 30.0, 0.0085, 5.0));
 		allLists.put(Bank.class, bankList);
 		
-		entList = new ArrayList<>();
+		entList = new Vector<>();
 		entList.add(new Ent("Іванов Петро Сидорович"));
 		allLists.put(Ent.class, entList);
 	}
@@ -95,7 +96,7 @@ class DataStorage implements Serializable  {
 //		return thisInstance.entList;
 //	}	
 
-	static ArrayList<EdiTableObject> getList(Class cl){
+	static Vector<EdiTableObject> getVector(Class cl){
 		return thisInstance.allLists.get(cl);
 	}	
 	

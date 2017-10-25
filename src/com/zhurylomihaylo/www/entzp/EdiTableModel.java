@@ -1,16 +1,16 @@
 package com.zhurylomihaylo.www.entzp;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Vector;
 
 class EdiTableModel extends AbstractTableModel {
-	ArrayList<EdiTableObject> listOfObjects;
+	Vector<EdiTableObject> listOfObjects;
 	Class realClass;
 	
 	/******************** CONSTRUCTORS *********************/
 	
-	EdiTableModel(Class realClass, ArrayList<EdiTableObject> listOfObjects){
+	EdiTableModel(Class realClass, Vector<EdiTableObject> listOfObjects){
 		this.listOfObjects = listOfObjects;
 		this.realClass = realClass;
 	}	
@@ -25,7 +25,8 @@ class EdiTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		System.out.println(new Date() + " - " + realClass + " - getSelectedColumn - (" + MainFrame.bankTable.getColumnSelectionAllowed() + ")");
+		//System.out.println(new Date() + " - " + realClass.getSimpleName() + " - getRowSelectionAllowed - (" + MainFrame.bankTable.getRowSelectionAllowed() + ")");
+		//System.out.println(new Date() + " - " + MainFrame.bankTable.getSelectedRow());
 		return listOfObjects.size();
 	}
 

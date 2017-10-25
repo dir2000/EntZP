@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 class Ent  implements Serializable, EdiTableObject {
-	//private static Object[][] columnFieldsInfo;
+	static int BANK_FIELS_INDEX = 6;
+	
 	String name;
 	BigDecimal net = BigDecimal.ZERO;
 	BigDecimal netPlus1 = BigDecimal.ZERO;

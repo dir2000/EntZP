@@ -19,7 +19,7 @@ class Bank implements Serializable, EdiTableObject
 	BigDecimal transactionFee = BigDecimal.ZERO;
 
 	static {
-		//1. Field name 2. Column header 3. Is numeric
+		//1. Field name 2. Column header 3. Is numeric 4. Editable
 		Object[][] columnFieldsInfo = new Object[4][];
 		//columnFieldsInfo[0] = new Object[]{"id", "ID", false};
 		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false, true};
