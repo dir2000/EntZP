@@ -19,12 +19,14 @@ class MainFrame extends JFrame {
 	private JPanel settingsPane;
 
 	private JPanel banksPane = new JPanel();
+	private JPanel bankButtonsPane = new JPanel();
 	private JButton addBankButton = new JButton("Додати банк");
 	private JButton deleteBankButton = new JButton("Вилучити банк");
 	private EdiTableModel bankTableModel = new EdiTableModel(Bank.class, DataStorage.getVector(Bank.class));
 	private JTable bankTable = new JTable(bankTableModel);
 
 	private JPanel entPane = new JPanel();
+	private JPanel entButtonsPane = new JPanel();
 	private JButton addEntButton = new JButton("Додати особу");
 	private JButton deleteEntButton = new JButton("Вилучити особу");
 	private EdiTableModel entTableModel = new EdiTableModel(Ent.class, DataStorage.getVector(Ent.class));
@@ -48,39 +50,63 @@ class MainFrame extends JFrame {
 	void buildGUI() {
 		rendComp = new EditableCellRendererComponent();
 
+		//-------- settings pane --------
 		settingsPane = new JPanel();
 		settingsPane.setLayout(new BoxLayout(settingsPane, BoxLayout.Y_AXIS));
 		add(settingsPane, BorderLayout.NORTH);
 
-		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, addBankButton,
+		//-------- bank table --------
+		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, bankButtonsPane, addBankButton,
 				deleteBankButton);
 		settingsPane.add(banksPane);
 
-//		testButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JOptionPane.showMessageDialog(MainFrame.this, bankTable.getSelectedRow());
-//			}
-//		});
-//		settingsPane.add(testButton);
+		//-------- test button --------
+		testButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//JOptionPane.showMessageDialog(MainFrame.this, bankTable.getSelectedRow());
+				JOptionPane.showMessageDialog(MainFrame.this, bankBox.getSelectedItem());
+			}
+		});
+		settingsPane.add(testButton);
 
+		//-------- consts --------
 		buildGUIConsts();
 
-		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, addEntButton, deleteEntButton);
+		//-------- ents pane --------
+		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, entButtonsPane, addEntButton, deleteEntButton);
 		add(entPane, BorderLayout.CENTER);
 
 		TableColumn column = entTable.getColumnModel().getColumn(Ent.BANK_FIELS_INDEX);
 		column.setCellEditor(new DefaultCellEditor(bankBox));
 		
+		//-------- clearing of selected bank --------
+		JButton bankClearButton = new JButton("Очистити банк");
+		bankClearButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = entTable.getSelectedRow();
+				if (selectedRow < 0)
+					return;
+				
+				EdiTableObject ent = DataStorage.getVector(Ent.class).get(selectedRow);
+				if (ent.getFieldValue(Ent.class, Ent.BANK_FIELS_INDEX) != null){
+					ent.setFieldValue(Ent.class, Ent.BANK_FIELS_INDEX, null);
+					entTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
+				};
+			}
+		});
+		entButtonsPane.add(bankClearButton);
+		
+		//--------
 		pack();
 	}
 
-	void buildGUITablePane(Class cl, JPanel pane, String title, TableModel tableModel, JTable table, JButton addButton,
+	void buildGUITablePane(Class cl, JPanel pane, String title, TableModel tableModel, JTable table, JPanel buttonsPane, JButton addButton,
 			JButton deleteButton) {
 		pane.setBorder(BorderFactory.createTitledBorder(title));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-		JPanel buttonsPane = new JPanel();
 		buttonsPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		buttonsPane.add(addButton);
 		buttonsPane.add(deleteButton);
@@ -184,6 +210,7 @@ class MainFrame extends JFrame {
 //			}
 //		});
 	}
+	
 	void setAddListener(JButton button, Class cl, EdiTableModel tableModel) {
 		ActionListener al = new ActionListener() {
 			@Override
@@ -210,7 +237,7 @@ class MainFrame extends JFrame {
 				
 				EdiTableObject etoToDelete = DataStorage.getVector(cl).get(selectedRow);
 				
-				if (integrityCheckFailed(cl, etoToDelete))
+				if (PresenceOfLinksOnBank(cl, etoToDelete))
 					return;
 					
 				int reply = JOptionPane.showOptionDialog(MainFrame.this, "Ви дійсно бажаєте вилучити \"" + etoToDelete + "\"?",
@@ -224,7 +251,7 @@ class MainFrame extends JFrame {
 		});
 	}
 	
-	boolean integrityCheckFailed(Class cl, EdiTableObject etoToDelete){
+	boolean PresenceOfLinksOnBank(Class cl, EdiTableObject etoToDelete){
 		if (!cl.equals(Bank.class))
 			return false;
 		

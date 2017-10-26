@@ -31,9 +31,9 @@ class EdiTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		EdiTableObject obj = listOfObjects.get(arg0);
-		return obj.getFieldValue(realClass, arg1);
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		EdiTableObject obj = listOfObjects.get(rowIndex);
+		return obj.getFieldValue(realClass, columnIndex);
 	}
 	
 	@Override	
