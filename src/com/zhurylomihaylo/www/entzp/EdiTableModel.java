@@ -39,7 +39,7 @@ class EdiTableModel extends AbstractTableModel {
 	@Override	
 	public void setValueAt(Object value, int r, int c) {
 		EdiTableObject obj = listOfObjects.get(r);
-		obj.setFieldValue(realClass, c, value);
+		obj.setFieldValue(realClass, r, c, value);
 	}
 	
 	public boolean isCellEditable(int r, int c){

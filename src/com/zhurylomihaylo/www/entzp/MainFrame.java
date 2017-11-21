@@ -2,8 +2,13 @@ package com.zhurylomihaylo.www.entzp;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.*;
 import java.text.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -13,7 +18,8 @@ import javax.swing.text.*;
 class MainFrame extends JFrame {
 	static final int DEFAULT_WIDTH = 700;
 	static MainFrame mainFrame;
-
+	static EdiTableModel staticEntTableModelLink;
+	
 	EditableCellRendererComponent rendComp;
 
 	private JPanel settingsPane;
@@ -34,17 +40,32 @@ class MainFrame extends JFrame {
 	
 	JComboBox bankBox = new JComboBox<>(DataStorage.getVector(Bank.class));
 
-	JButton testButton = new JButton("Test");
+	HashMap<JFormattedTextField, String> formattedFields = new HashMap<>();
+	
+	JLabel notifLabel = new JLabel("Notifications will be here...");
+	//JButton testButton = new JButton("Test");
 
 	/******************** CONSTRUCTORS ********************/
 
 	MainFrame() {
 		mainFrame = this;
+		staticEntTableModelLink = entTableModel;
 
 		buildGUI();
 		setListeners();
 	}
 
+	/******************** STATIC METHODS *********************/
+	
+	static void calculateEnts() {
+		Vector<EdiTableObject> vector = staticEntTableModelLink.listOfObjects;
+		for (int i = 0; i < vector.size(); i++) {
+			EdiTableObject obj = vector.get(i);
+			obj.calculate(i);
+		}		
+		staticEntTableModelLink.fireTableDataChanged();		
+	}
+	
 	/******************** NON-STATIC METHODS ********************/
 
 	void buildGUI() {
@@ -60,15 +81,15 @@ class MainFrame extends JFrame {
 				deleteBankButton);
 		settingsPane.add(banksPane);
 
-		//-------- test button --------
-		testButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//JOptionPane.showMessageDialog(MainFrame.this, bankTable.getSelectedRow());
-				JOptionPane.showMessageDialog(MainFrame.this, bankBox.getSelectedItem());
-			}
-		});
-		settingsPane.add(testButton);
+//		//-------- test button --------
+//		testButton.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				//JOptionPane.showMessageDialog(MainFrame.this, bankTable.getSelectedRow());
+//				JOptionPane.showMessageDialog(MainFrame.this, bankBox.getSelectedItem());
+//			}
+//		});
+//		settingsPane.add(testButton);
 
 		//-------- consts --------
 		buildGUIConsts();
@@ -91,12 +112,14 @@ class MainFrame extends JFrame {
 				
 				EdiTableObject ent = DataStorage.getVector(Ent.class).get(selectedRow);
 				if (ent.getFieldValue(Ent.class, Ent.BANK_FIELS_INDEX) != null){
-					ent.setFieldValue(Ent.class, Ent.BANK_FIELS_INDEX, null);
+					ent.setFieldValue(Ent.class, selectedRow, Ent.BANK_FIELS_INDEX, null);
 					entTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
 				};
 			}
 		});
 		entButtonsPane.add(bankClearButton);
+		
+		add(notifLabel, BorderLayout.SOUTH);
 		
 		//--------
 		pack();
@@ -141,30 +164,17 @@ class MainFrame extends JFrame {
 		JPanel constPane = new JPanel();
 		constPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		constPane.add(new JLabel("Мінімальна зарплата, грн., %"));
-		makeFormattedField(constPane, DataStorage.getMinSalary());
-
-		constPane.add(new JLabel("Ставка ЄСВ, %"));
-		makeFormattedField(constPane, DataStorage.getEsvPercent());
-
-		constPane.add(new JLabel("Ставка єдиного податку, %"));
-		makeFormattedField(constPane, DataStorage.getTaxPercent());
-
-		constPane.add(new JLabel("Додатковий відсоток, %"));
-		makeFormattedField(constPane, DataStorage.getAdditionalPercent());
+		makeFormattedField(constPane, "Мінімальна зарплата, грн., %", DataStorage.getMinSalary(), "setMinSalary");
+		makeFormattedField(constPane, "Ставка ЄСВ, %", DataStorage.getEsvPercent(), "setEsvPercent");
+		makeFormattedField(constPane, "Ставка єдиного податку, %", DataStorage.getTaxPercent(), "setTaxPercent");
+		makeFormattedField(constPane, "Додатковий відсоток, %", DataStorage.getAdditionalPercent(), "setAdditionalPercent");
 
 		settingsPane.add(constPane);
-
-		// https://stackoverflow.com/questions/6089508/how-to-use-bigdecimal-with-jformattedtextfield
-		// Then in the lostFocus method, on the line:
-		// jFormattedTextField.commitEdit();
-
-		// String number = ftf.getText().replace(",","");
-		// BigDecimal bd = new BigDecimal(number);
-
 	}
 
-	void makeFormattedField(JPanel pane, BigDecimal value) {
+	void makeFormattedField(JPanel pane, String header, BigDecimal value, String methodName) {
+		pane.add(new JLabel(header));
+		
 		JFormattedTextField field = new JFormattedTextField(value);
 		field.setPreferredSize(new Dimension(100, (int) field.getPreferredSize().getHeight()));
 		field.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -174,6 +184,8 @@ class MainFrame extends JFrame {
 		DefaultFormatterFactory fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
 		field.setFormatterFactory(fmtFactory);
 		pane.add(field);
+		
+		formattedFields.put(field, methodName);
 
 		// BigDecimal bigValue = (BigDecimal) f.getValue();
 	}
@@ -184,6 +196,37 @@ class MainFrame extends JFrame {
 
 		setAddListener(addEntButton, Ent.class, entTableModel);		
 		setDeleteListener(deleteEntButton, Ent.class, entTableModel, entTable);
+
+		//
+		
+		class LocalPropertyChangeListener implements PropertyChangeListener
+		 {
+			String methodName;
+			
+			LocalPropertyChangeListener(String methodName, Class<DataStorage> dataStorageClass) {
+				this.methodName = methodName;
+			}
+			
+			//dataStorageClass.
+			
+	        @Override
+	        public void propertyChange(PropertyChangeEvent evt) {
+	        	notifLabel.setText(new Date() + " calculated.");
+	        	calculateEnts();
+	        }
+	    };
+	    
+	    for (HashMap.Entry<JFormattedTextField, String> entry : formattedFields.entrySet()) {
+	    	JFormattedTextField field = entry.getKey();
+	    	String methodName = entry.getValue();
+	    	
+	    	field.addPropertyChangeListener("value", new LocalPropertyChangeListener(methodName, DataStorage.class));
+	    };
+	    
+//		for (JFormattedTextField field : formattedFields) {
+//			field.addPropertyChangeListener("value", calcListener);
+//		}
+		
 		// addBankButton.addActionListener(new ActionListener() {
 		// @Override
 		// public void actionPerformed(ActionEvent e) {

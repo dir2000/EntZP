@@ -50,8 +50,8 @@ class DataStorage implements Serializable  {
 		allLists = new HashMap<>();
 		
 		bankList = new Vector<>();
-		bankList.add(new Bank("Аваль", 50.0, 0.0085, 5.0));
-		bankList.add(new Bank("Приватбанк", 30.0, 0.0085, 5.0));
+		bankList.add(new Bank("Аваль", 50.0, 0.85, 5.0));
+		bankList.add(new Bank("Приватбанк", 30.0, 0.85, 5.0));
 		allLists.put(Bank.class, bankList);
 		
 		entList = new Vector<>();

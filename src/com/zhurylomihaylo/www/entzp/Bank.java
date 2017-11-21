@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -17,6 +18,7 @@ class Bank implements Serializable, EdiTableObject
 	BigDecimal monthlyFee = BigDecimal.ZERO;
 	BigDecimal transactionComission = BigDecimal.ZERO;
 	BigDecimal transactionFee = BigDecimal.ZERO;
+	BigDecimal avgTransationCount = BigDecimal.ZERO;
 
 	static {
 		//1. Field name 2. Column header 3. Is numeric 4. Editable
@@ -26,6 +28,7 @@ class Bank implements Serializable, EdiTableObject
 		columnFieldsInfo[1] = new Object[]{"monthlyFee", "Щомісячна плата", true, true};
 		columnFieldsInfo[2] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %", true, true};
 		columnFieldsInfo[3] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true, true};
+		columnFieldsInfo[3] = new Object[]{"avgTransationCount", "Середня кількість транзакцій", true, true};
 		classFieldsInfo.put(Bank.class, columnFieldsInfo);
 	}
 	
@@ -53,6 +56,9 @@ class Bank implements Serializable, EdiTableObject
 		return name;
 	}
 	
-
+	@Override
+	public void calculate(int rowIndex){
+		MainFrame.calculateEnts();
+	}
 	
 }

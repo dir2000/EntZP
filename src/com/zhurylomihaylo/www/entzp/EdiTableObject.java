@@ -41,7 +41,7 @@ interface EdiTableObject {
 		return null;
 	}
 	
-	default void setFieldValue(Class cl, int fieldIndex, Object value) {
+	default void setFieldValue(Class cl, int rowIndex, int fieldIndex, Object value) {
 		try {
 			Field field = cl.getDeclaredField((String) classFieldsInfo.get(cl)[fieldIndex][FIELD_NAME]);
 			if (field.getType() == Class.forName("java.math.BigDecimal"))
@@ -55,7 +55,11 @@ interface EdiTableObject {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}		
-	}		
+		}	
+		
+		calculate(rowIndex);
+	}
+	
+	void calculate(int rowIndex);
 }
 
