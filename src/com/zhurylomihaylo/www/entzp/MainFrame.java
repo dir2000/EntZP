@@ -2,8 +2,10 @@ package com.zhurylomihaylo.www.entzp;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.print.PrinterException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Method;
 import java.math.*;
 import java.text.*;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ class MainFrame extends JFrame {
 	private JPanel entButtonsPane = new JPanel();
 	private JButton addEntButton = new JButton("Додати особу");
 	private JButton deleteEntButton = new JButton("Вилучити особу");
+	private JButton printEntsButton = new JButton("Друк");
 	private EdiTableModel entTableModel = new EdiTableModel(Ent.class, DataStorage.getVector(Ent.class));
 	private JTable entTable = new JTable(entTableModel);
 	
@@ -119,6 +122,8 @@ class MainFrame extends JFrame {
 		});
 		entButtonsPane.add(bankClearButton);
 		
+		entButtonsPane.add(printEntsButton);
+		
 		add(notifLabel, BorderLayout.SOUTH);
 		
 		//--------
@@ -202,9 +207,11 @@ class MainFrame extends JFrame {
 		class LocalPropertyChangeListener implements PropertyChangeListener
 		 {
 			String methodName;
+			Class<DataStorage> dataStorageClass;
 			
 			LocalPropertyChangeListener(String methodName, Class<DataStorage> dataStorageClass) {
 				this.methodName = methodName;
+				this.dataStorageClass = dataStorageClass;
 			}
 			
 			//dataStorageClass.
@@ -212,6 +219,12 @@ class MainFrame extends JFrame {
 	        @Override
 	        public void propertyChange(PropertyChangeEvent evt) {
 	        	notifLabel.setText(new Date() + " calculated.");
+	        	try {
+		        	Method method = dataStorageClass.getDeclaredMethod(methodName, new Class[]{BigDecimal.class});
+		        	method.invoke(null, new Object[]{evt.getNewValue()});
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(MainFrame.this, e);
+				}
 	        	calculateEnts();
 	        }
 	    };
@@ -222,6 +235,26 @@ class MainFrame extends JFrame {
 	    	
 	    	field.addPropertyChangeListener("value", new LocalPropertyChangeListener(methodName, DataStorage.class));
 	    };
+	    
+	    //
+	    
+	    printEntsButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+				    boolean complete = entTable.print();
+				    if (complete) {
+				    	/* show a success message  */
+				    } else {
+				    	 /*show a message indicating that printing was cancelled */
+				    	JOptionPane.showMessageDialog(MainFrame.this, "Друк скасовано");
+				    }
+				} catch (PrinterException pe) {
+				    /* Printing failed, report to the user */
+					JOptionPane.showMessageDialog(MainFrame.this, pe);
+				}			}
+		});
 	    
 //		for (JFormattedTextField field : formattedFields) {
 //			field.addPropertyChangeListener("value", calcListener);
