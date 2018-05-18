@@ -28,16 +28,16 @@ class MainFrame extends JFrame {
 
 	private JPanel banksPane = new JPanel();
 	private JPanel bankButtonsPane = new JPanel();
-	private JButton addBankButton = new JButton("Додати банк");
-	private JButton deleteBankButton = new JButton("Вилучити банк");
+	private JButton addBankButton = new JButton("Р”РѕРґР°С‚Рё Р±Р°РЅРє");
+	private JButton deleteBankButton = new JButton("Р’РёР»СѓС‡РёС‚Рё Р±Р°РЅРє");
 	private EdiTableModel bankTableModel = new EdiTableModel(Bank.class, DataStorage.getVector(Bank.class));
 	private JTable bankTable = new JTable(bankTableModel);
 
 	private JPanel entPane = new JPanel();
 	private JPanel entButtonsPane = new JPanel();
-	private JButton addEntButton = new JButton("Додати особу");
-	private JButton deleteEntButton = new JButton("Вилучити особу");
-	private JButton printEntsButton = new JButton("Друк");
+	private JButton addEntButton = new JButton("Р”РѕРґР°С‚Рё РѕСЃРѕР±Сѓ");
+	private JButton deleteEntButton = new JButton("Р’РёР»СѓС‡РёС‚Рё РѕСЃРѕР±Сѓ");
+	private JButton printEntsButton = new JButton("Р”СЂСѓРє");
 	private EdiTableModel entTableModel = new EdiTableModel(Ent.class, DataStorage.getVector(Ent.class));
 	private JTable entTable = new JTable(entTableModel);
 	
@@ -80,7 +80,7 @@ class MainFrame extends JFrame {
 		add(settingsPane, BorderLayout.NORTH);
 
 		//-------- bank table --------
-		buildGUITablePane(Bank.class, banksPane, "Тарифи банків", bankTableModel, bankTable, bankButtonsPane, addBankButton,
+		buildGUITablePane(Bank.class, banksPane, "РўР°СЂРёС„Рё Р±Р°РЅРєС–РІ", bankTableModel, bankTable, bankButtonsPane, addBankButton,
 				deleteBankButton);
 		settingsPane.add(banksPane);
 
@@ -98,14 +98,14 @@ class MainFrame extends JFrame {
 		buildGUIConsts();
 
 		//-------- ents pane --------
-		buildGUITablePane(Ent.class, entPane, "Особи", entTableModel, entTable, entButtonsPane, addEntButton, deleteEntButton);
+		buildGUITablePane(Ent.class, entPane, "РћСЃРѕР±Рё", entTableModel, entTable, entButtonsPane, addEntButton, deleteEntButton);
 		add(entPane, BorderLayout.CENTER);
 
 		TableColumn column = entTable.getColumnModel().getColumn(Ent.BANK_FIELS_INDEX);
 		column.setCellEditor(new DefaultCellEditor(bankBox));
 		
 		//-------- clearing of selected bank --------
-		JButton bankClearButton = new JButton("Очистити банк");
+		JButton bankClearButton = new JButton("РћС‡РёСЃС‚РёС‚Рё Р±Р°РЅРє");
 		bankClearButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -169,10 +169,10 @@ class MainFrame extends JFrame {
 		JPanel constPane = new JPanel();
 		constPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		makeFormattedField(constPane, "Мінімальна зарплата, грн., %", DataStorage.getMinSalary(), "setMinSalary");
-		makeFormattedField(constPane, "Ставка ЄСВ, %", DataStorage.getEsvPercent(), "setEsvPercent");
-		makeFormattedField(constPane, "Ставка єдиного податку, %", DataStorage.getTaxPercent(), "setTaxPercent");
-		makeFormattedField(constPane, "Додатковий відсоток, %", DataStorage.getAdditionalPercent(), "setAdditionalPercent");
+		makeFormattedField(constPane, "МіРњС–РЅС–РјР°Р»СЊРЅР° Р·Р°СЂРїР»Р°С‚Р°, РіСЂРЅ., %", DataStorage.getMinSalary(), "setMinSalary");
+		makeFormattedField(constPane, "РЎС‚Р°РІРєР° Р„РЎР’, %", DataStorage.getEsvPercent(), "setEsvPercent");
+		makeFormattedField(constPane, "РЎС‚Р°РІРєР° С”РґРёРЅРѕРіРѕ РїРѕРґР°С‚РєСѓ, %", DataStorage.getTaxPercent(), "setTaxPercent");
+		makeFormattedField(constPane, "Р”РѕРґР°С‚РєРѕРІРёР№ РІС–РґСЃРѕС‚РѕРє, %", DataStorage.getAdditionalPercent(), "setAdditionalPercent");
 
 		settingsPane.add(constPane);
 	}
@@ -248,7 +248,7 @@ class MainFrame extends JFrame {
 				    	/* show a success message  */
 				    } else {
 				    	 /*show a message indicating that printing was cancelled */
-				    	JOptionPane.showMessageDialog(MainFrame.this, "Друк скасовано");
+				    	JOptionPane.showMessageDialog(MainFrame.this, "Р”СЂСѓРє СЃРєР°СЃРѕРІР°РЅРѕ");
 				    }
 				} catch (PrinterException pe) {
 				    /* Printing failed, report to the user */
@@ -263,7 +263,7 @@ class MainFrame extends JFrame {
 		// addBankButton.addActionListener(new ActionListener() {
 		// @Override
 		// public void actionPerformed(ActionEvent e) {
-		// DataStorage.getList(Bank.class).add(new Bank("Новий банк"));
+		// DataStorage.getList(Bank.class).add(new Bank("РќРѕРІРёР№ Р±Р°РЅРє"));
 		// bankTableModel.fireTableDataChanged();
 		// }
 		// });
@@ -276,9 +276,9 @@ class MainFrame extends JFrame {
 //					return;
 //
 //				EdiTableObject bank = DataStorage.getList(Bank.class).get(selectedRow);
-//				int reply = JOptionPane.showOptionDialog(MainFrame.this, "Ви дійсно бажаєте вилучити \"" + bank + "\"?",
-//						"Увага", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-//						new String[] { "Так", "Ні" }, "Так");
+//				int reply = JOptionPane.showOptionDialog(MainFrame.this, "Р’Рё РґС–Р№СЃРЅРѕ Р±Р°Р¶Р°С”С‚Рµ РІРёР»СѓС‡РёС‚Рё \"" + bank + "\"?",
+//						"РЈРІР°РіР°", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+//						new String[] { "РўР°Рє", "РќС–" }, "РўР°Рє");
 //				if (reply == JOptionPane.YES_OPTION) {
 //					DataStorage.getList(Bank.class).remove(bank);
 //					bankTableModel.fireTableDataChanged();
@@ -316,9 +316,9 @@ class MainFrame extends JFrame {
 				if (PresenceOfLinksOnBank(cl, etoToDelete))
 					return;
 					
-				int reply = JOptionPane.showOptionDialog(MainFrame.this, "Ви дійсно бажаєте вилучити \"" + etoToDelete + "\"?",
-						"Увага", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-						new String[] { "Так", "Ні" }, "Так");
+				int reply = JOptionPane.showOptionDialog(MainFrame.this, "Р’Рё РґС–Р№СЃРЅРѕ Р±Р°Р¶Р°С”С‚Рµ РІРёР»СѓС‡РёС‚Рё \"" + etoToDelete + "\"?",
+						"РЈРІР°РіР°", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+						new String[] { "РўР°Рє", "РќС–" }, "РўР°Рє");
 				if (reply == JOptionPane.YES_OPTION) {
 					DataStorage.getVector(cl).remove(etoToDelete);
 					tableModel.fireTableDataChanged();
@@ -334,7 +334,7 @@ class MainFrame extends JFrame {
 		Vector<EdiTableObject> list = DataStorage.getVector(Ent.class);
 		for(EdiTableObject listEto : list) {
 			if (etoToDelete.equals(listEto.getFieldValue(Ent.class, Ent.BANK_FIELS_INDEX))) {
-				JOptionPane.showMessageDialog(MainFrame.this, "Вибачте, але цей банк вже вибраний в списку осіб.");
+				JOptionPane.showMessageDialog(MainFrame.this, "Р’РёР±Р°С‡С‚Рµ, Р°Р»Рµ С†РµР№ Р±Р°РЅРє РІР¶Рµ РІРёР±СЂР°РЅРёР№ РІ СЃРїРёСЃРєСѓ РѕСЃС–Р±.");
 				return true;
 			}
 		}

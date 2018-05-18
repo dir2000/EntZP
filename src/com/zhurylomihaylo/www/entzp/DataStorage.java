@@ -50,12 +50,12 @@ class DataStorage implements Serializable  {
 		allLists = new HashMap<>();
 		
 		bankList = new Vector<>();
-		bankList.add(new Bank("Аваль", 50.0, 0.85, 5.0));
-		bankList.add(new Bank("Приватбанк", 30.0, 0.85, 5.0));
+		bankList.add(new Bank("РђРІР°Р»СЊ", 50.0, 0.85, 5.0));
+		bankList.add(new Bank("РџСЂРёРІР°С‚Р±Р°РЅРє", 30.0, 0.85, 5.0));
 		allLists.put(Bank.class, bankList);
 		
 		entList = new Vector<>();
-		entList.add(new Ent("Іванов Петро Сидорович"));
+		entList.add(new Ent("Р†РІР°РЅРѕРІ РџРµС‚СЂРѕ РЎРёРґРѕСЂРѕРІРёС‡"));
 		allLists.put(Ent.class, entList);
 	}
 	
@@ -76,11 +76,11 @@ class DataStorage implements Serializable  {
 		{
 			thisInstance = (DataStorage) oin.readObject();			
 		} catch (java.io.InvalidClassException ex){
-			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": змінився формат файлу.");
+			JOptionPane.showMessageDialog(null, "РџРѕРјРёР»РєР° С‡РёС‚Р°РЅРЅСЏ С„Р°Р№Р»Сѓ " + file + ": Р·РјС–РЅРёРІСЃСЏ С„РѕСЂРјР°С‚ С„Р°Р№Р»Сѓ.");
 			thisInstance = new DataStorage();
 		} 
 		catch (Exception ex){
-			JOptionPane.showMessageDialog(null, "Помилка читання файлу " + file + ": \"" + ex + "\"");
+			JOptionPane.showMessageDialog(null, "РџРѕРјРёР»РєР° С‡РёС‚Р°РЅРЅСЏ С„Р°Р№Р»Сѓ " + file + ": \"" + ex + "\"");
 			JOptionPane.showMessageDialog(null, ex.getClass());
 			thisInstance = new DataStorage();
 		}

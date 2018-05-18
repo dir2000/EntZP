@@ -25,24 +25,24 @@ class Ent  implements Serializable, EdiTableObject {
 	static {
 		//1. Field name 2. Column header 3. Is numeric 4. Editable
 		Object[][] columnFieldsInfo = new Object[11][];
-		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false, true};
-		columnFieldsInfo[1] = new Object[]{"net", "Основна сума", true, true};
-		columnFieldsInfo[2] = new Object[]{"netPlus1", "Доплата 1", true, true};
-		columnFieldsInfo[3] = new Object[]{"netPlus2", "Доплата 2", true, true};
-		columnFieldsInfo[4] = new Object[]{"esv", "ЄСВ", true, false};
-		columnFieldsInfo[5] = new Object[]{"constTotal", "Всього витрат Нетто", true, false};
-		columnFieldsInfo[6] = new Object[]{"addPayment", "% від допл.2", true, false};
-		columnFieldsInfo[7] = new Object[]{"tax", "Єдиний податок", true, false};
-		columnFieldsInfo[8] = new Object[]{"bank", "Банк", false, true};		
-		columnFieldsInfo[9] = new Object[]{"bankServicePayment", "Послуги банку", true, false};
-		columnFieldsInfo[10] = new Object[]{"totalAll", "Всього", true, false};
+		columnFieldsInfo[0] = new Object[]{"name", "РќР°Р№РјРµРЅСѓРІР°РЅРЅСЏ", false, true};
+		columnFieldsInfo[1] = new Object[]{"net", "РћСЃРЅРѕРІРЅР° СЃСѓРјР°", true, true};
+		columnFieldsInfo[2] = new Object[]{"netPlus1", "Р”РѕРїР»Р°С‚Р° 1", true, true};
+		columnFieldsInfo[3] = new Object[]{"netPlus2", "Р”РѕРїР»Р°С‚Р° 2", true, true};
+		columnFieldsInfo[4] = new Object[]{"esv", "Р„РЎР’", true, false};
+		columnFieldsInfo[5] = new Object[]{"constTotal", "Р’СЃСЊРѕРіРѕ РІРёС‚СЂР°С‚ РќРµС‚С‚Рѕ", true, false};
+		columnFieldsInfo[6] = new Object[]{"addPayment", "% РІС–Рґ РґРѕРїР».2", true, false};
+		columnFieldsInfo[7] = new Object[]{"tax", "Р„РґРёРЅРёР№ РїРѕРґР°С‚РѕРє", true, false};
+		columnFieldsInfo[8] = new Object[]{"bank", "Р‘Р°РЅРє", false, true};		
+		columnFieldsInfo[9] = new Object[]{"bankServicePayment", "РџРѕСЃР»СѓРіРё Р±Р°РЅРєСѓ", true, false};
+		columnFieldsInfo[10] = new Object[]{"totalAll", "Р’СЃСЊРѕРіРѕ", true, false};
 		
 		classFieldsInfo.put(Ent.class, columnFieldsInfo);
 	}
 	
 	/******************** CONSTRUCTORS ********************/
 	Ent() {
-		this.name = "Нова особа";
+		this.name = "РќРѕРІР° РѕСЃРѕР±Р°";
 	}
 
 	Ent(String name) {

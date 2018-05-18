@@ -18,7 +18,7 @@ public class Entzp {
 			public void run() {
 				MainFrame frame = new MainFrame();
 				frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-				frame.setTitle("Розрахунок сум");
+				frame.setTitle("Р РѕР·СЂР°С…СѓРЅРѕРє СЃСѓРј");
 				frame.setVisible(true);
 
 				frame.addWindowListener(new WindowAdapter() {
@@ -29,12 +29,12 @@ public class Entzp {
 							ex.printStackTrace();
 							int reply = JOptionPane.showOptionDialog(
 									frame,
-									"При спробі зберегти дані трапилась помилка \"" + ex + "\". Ви справді хочете вийти?",
-									"Увага",
+									"РџСЂРё СЃРїСЂРѕР±С– Р·Р±РµСЂРµРіС‚Рё РґР°РЅС– С‚СЂР°РїРёР»Р°СЃСЊ РїРѕРјРёР»РєР° \"" + ex + "\". Р’Рё СЃРїСЂР°РІРґС– С…РѕС‡РµС‚Рµ РІРёР№С‚Рё?",
+									"РЈРІР°РіР°",
 									JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE,
 									null,
-									new String [] {"Так", "Ні"}, "Ні");
+									new String [] {"РўР°Рє", "РќС–"}, "РќС–");
 							if (reply != JOptionPane.YES_OPTION)
 								return; 
 						}

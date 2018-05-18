@@ -24,18 +24,18 @@ class Bank implements Serializable, EdiTableObject
 		//1. Field name 2. Column header 3. Is numeric 4. Editable
 		Object[][] columnFieldsInfo = new Object[4][];
 		//columnFieldsInfo[0] = new Object[]{"id", "ID", false};
-		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false, true};
-		columnFieldsInfo[1] = new Object[]{"monthlyFee", "Щомісячна плата", true, true};
-		columnFieldsInfo[2] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %", true, true};
-		columnFieldsInfo[3] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true, true};
-		columnFieldsInfo[3] = new Object[]{"avgTransationCount", "Середня кількість транзакцій", true, true};
+		columnFieldsInfo[0] = new Object[]{"name", "РќР°Р№РјРµРЅСѓРІР°РЅРЅСЏ", false, true};
+		columnFieldsInfo[1] = new Object[]{"monthlyFee", "Р©РѕРјС–СЃСЏС‡РЅР° РїР»Р°С‚Р°", true, true};
+		columnFieldsInfo[2] = new Object[]{"transactionComission", "Р’С–РґСЃРѕС‚РѕРє Р·Р° Р·РЅСЏС‚С‚СЏ РіРѕС‚С–РІРєРё, %", true, true};
+		columnFieldsInfo[3] = new Object[]{"transactionFee", "РџР»Р°С‚Р° Р·Р° Р·РЅСЏС‚С‚СЏ РіРѕС‚С–РІРєРё, РіСЂРЅ.", true, true};
+		columnFieldsInfo[3] = new Object[]{"avgTransationCount", "РЎРµСЂРµРґРЅСЏ РєС–Р»СЊРєС–СЃС‚СЊ С‚СЂР°РЅР·Р°РєС†С–Р№", true, true};
 		classFieldsInfo.put(Bank.class, columnFieldsInfo);
 	}
 	
 	/******************** CONSTRUCTORS *********************/
 	
 	Bank() {
-		this.name = "Новий банк";
+		this.name = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ";
 	}	
 	
 	Bank(String name) {
