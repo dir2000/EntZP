@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 interface EdiTableObject {
 	static final int FIELD_NAME = 0;
 	static final int FIELD_HEADER = 1;
@@ -35,8 +37,8 @@ interface EdiTableObject {
 	default Object getFieldValue(Class cl, int fieldIndex) {
 		try {
 			return cl.getDeclaredField((String) classFieldsInfo.get(cl)[fieldIndex][FIELD_NAME]).get(this);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
 		return null;
 	}
@@ -53,8 +55,8 @@ interface EdiTableObject {
 		catch (NumberFormatException ex){
 			//do nothing
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}	
 		
 		calculate(rowIndex);

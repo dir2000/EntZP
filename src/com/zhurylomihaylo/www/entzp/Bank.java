@@ -22,20 +22,20 @@ class Bank implements Serializable, EdiTableObject
 
 	static {
 		//1. Field name 2. Column header 3. Is numeric 4. Editable
-		Object[][] columnFieldsInfo = new Object[4][];
+		Object[][] columnFieldsInfo = new Object[5][];
 		//columnFieldsInfo[0] = new Object[]{"id", "ID", false};
 		columnFieldsInfo[0] = new Object[]{"name", "Найменування", false, true};
 		columnFieldsInfo[1] = new Object[]{"monthlyFee", "Щомісячна плата", true, true};
 		columnFieldsInfo[2] = new Object[]{"transactionComission", "Відсоток за зняття готівки, %", true, true};
 		columnFieldsInfo[3] = new Object[]{"transactionFee", "Плата за зняття готівки, грн.", true, true};
-		columnFieldsInfo[3] = new Object[]{"avgTransationCount", "Середня кількість транзакцій", true, true};
+		columnFieldsInfo[4] = new Object[]{"avgTransationCount", "Середня кількість транзакцій", true, true};
 		classFieldsInfo.put(Bank.class, columnFieldsInfo);
 	}
 	
 	/******************** CONSTRUCTORS *********************/
 	
 	Bank() {
-		this.name = "����� ����";
+		this.name = "Новий банк";
 	}	
 	
 	Bank(String name) {
